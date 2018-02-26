@@ -8,10 +8,12 @@
 #include <cctype>
 #include <vector>
 #include <regex>
+
+#define CATCH_CONFIG_MAIN
 #include "catch.hpp"
 using namespace std;
-#define CATCH_CONFIG_MAIN
 #pragma comment(lib, "msvcrtd.lib")
+
 map <char, string> morze = {
 	{ 'a', ".-" },
 	{ 'b', "-..." },
@@ -157,10 +159,10 @@ vector<char> GetAnswer(string text)
 
 
 
-	int main()
-	{
-		return 0;
-	}
+	//int main()
+	//{
+	//	return 0;
+	//}
 	SCENARIO("Text -.? and check the char")
 	{
 			GIVEN("text1 = ? ? ? ? ")
