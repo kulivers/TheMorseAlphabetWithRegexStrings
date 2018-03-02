@@ -197,17 +197,28 @@ string HyphenInsteadQuestionMark(string text)
 	}
 }
 
+
+
 string decodeMorze(string morze)
 {
 	for (int i = 0; i < morze.size(); i++)
 	{
 		if (morze[i] == '?')
-			return decodeMorze(HyphenInsteadQuestionMark(morze)) + decodeMorze(PointInsteadQuestionMark(morze)) + decodeMorze(NothingInsteadQuestionMark(morze));
+			return (decodeMorze(HyphenInsteadQuestionMark(morze)) + "   " + decodeMorze(PointInsteadQuestionMark(morze)) + "   " + decodeMorze(NothingInsteadQuestionMark(morze)));
 
 	}
+	return morze;
 }
 
-
+int main()
+{
+	string text1;
+	text1 = "-.?";
+	string FixedText = decodeMorze(text1);
+	cout << FixedText;
+	return 0;
+} 
+/*
 SCENARIO("Text -.? and check the char")
 {
 	GIVEN("text1 = ? ? ? ?, must return all chars")
@@ -252,3 +263,4 @@ SCENARIO("Text -.? and check the char")
 
 }
 
+*/
