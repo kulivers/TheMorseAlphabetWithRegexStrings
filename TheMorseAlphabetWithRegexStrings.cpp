@@ -102,7 +102,7 @@ std::tr1::regex rx("ello");
 regex_match(str.begin(), str.end(), rx)
 regex_search(str.begin(), str.end(), rx)
 
-‘ункци€ regex_match вернет false, так как строка str отличаетс€ от регул€рного выражени€ rx. 
+‘ункци€ regex_match вернет false, так как строка str отличаетс€ от регул€рного выражени€ rx.
 ј функци€ regex_search вернут true, так как регул€рное выражение содержитс€ в строке.
 */
 vector<char> GetAnswer(string text)
@@ -159,32 +159,96 @@ vector<char> GetAnswer(string text)
 
 
 
-	//int main()
-	//{
-	//	return 0;
-	//}
-	SCENARIO("Text -.? and check the char")
+//если приходит '..' ты вызываешь мэп
+//если там есть знак вопроса, ты вызываешь сам себ€ три раза
+string NothingInsteadQuestionMark(string text)
+{
+	for (int i = 0; i < text.size(); i++)
 	{
-			GIVEN("text1 = ? ? ? ? ")
-			{
-				string text1;
-				text1 = "????";
+		if (text[i] == '?')
+		{
+			text.erase(i, 1);
+			return text;
+		}
+	}
+}
 
-				vector<char> CorrectChars;
-				CorrectChars = GetAnswer(text1);
+string PointInsteadQuestionMark(string text)
+{
+	for (int i = 0; i < text.size(); i++)
+	{
+		if (text[i] == '?')
+		{
+			text[i] = '.';
+			return text;
+		}
+	}
+}
 
-				REQUIRE(CorrectChars == GetAnswer(text1));
+string HyphenInsteadQuestionMark(string text)
+{
+	for (int i = 0; i < text.size(); i++)
+	{
+		if (text[i] == '?')
+		{
+			text[i] = '-';
+			return text;
+		}
+	}
+}
 
-				WHEN("we add . to the end")
-				{
-					text1.push_back('.');
+string decodeMorze(string morze)
+{
+	for (int i = 0; i < morze.size(); i++)
+	{
+		if (morze[i] == '?')
+			return decodeMorze(HyphenInsteadQuestionMark(morze)) + decodeMorze(PointInsteadQuestionMark(morze)) + decodeMorze(NothingInsteadQuestionMark(morze));
 
-					THEN("will be a few chars")
-					{
-						REQUIRE(CorrectChars == GetAnswer(text1));
-					}
-				}
-			}
+	}
+}
+
+
+SCENARIO("Text -.? and check the char")
+{
+	GIVEN("text1 = ? ? ? ?, must return all chars")
+	{
+		string text1;
+		text1 = "????";
+
+		vector<char> CorrectChars;
+		CorrectChars = GetAnswer(text1);
+
+		REQUIRE(CorrectChars.size() == 26);
+
+
+	}
+	GIVEN("text1 = ???????, must return all symbols")
+	{
+		string text1;
+		text1 = "???????";
+
+		vector<char> CorrectChars;
+		CorrectChars = GetAnswer(text1);
+
+		REQUIRE(CorrectChars.size() == 49);
+
+
 	}
 
+	GIVEN("text1 = ??. must return DEGINRS ")
+	{
+		string text1;
+		text1 = "??.";
+
+		vector<char> CorrectChars;
+		vector<char> Answer = { 'd','e','g','i','n','r','s' };
+		CorrectChars = GetAnswer(text1);
+
+		REQUIRE(CorrectChars == Answer);
+
+
+	}
+
+
+}
 
