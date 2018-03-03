@@ -66,6 +66,19 @@ map <char, string> morze = {
 	{ '@', ".--.-." },
 };
 
+
+map <string, char> reverseMorze(map <char, string> morze)
+{
+	map<string, char> m2;
+	for (map<char, string>::iterator it = morze.begin(); it != morze.end(); ++it)
+		m2[it->second] = it->first;
+
+	return m2;
+}
+
+map <string, char> reversedMorze = reverseMorze(morze);
+
+
 bool TextContainsJustSymbols(string tx)
 {
 	for (int i = 0; i < tx.size(); i++)
@@ -204,20 +217,46 @@ string decodeMorze(string morze)
 	for (int i = 0; i < morze.size(); i++)
 	{
 		if (morze[i] == '?')
-			return (decodeMorze(HyphenInsteadQuestionMark(morze)) + "   " + decodeMorze(PointInsteadQuestionMark(morze)) + "   " + decodeMorze(NothingInsteadQuestionMark(morze)));
+			return (decodeMorze(HyphenInsteadQuestionMark(morze)) + "   " + decodeMorze(PointInsteadQuestionMark(morze)) + "   " + decodeMorze(NothingInsteadQuestionMark(morze)) + "   ");
 
 	}
 	return morze;
+}
+
+vector<char> decodeMorzeByChars(string cintext)
+{
+	cintext = decodeMorze(cintext);
+	string oneCharofMorze;
+	vector<char> preparedChars;
+	map <string, char> reversedMorze = reverseMorze(morze);
+
+	for (int i = 0; i < cintext.size(); i++)
+	{
+		if (cintext[i] != ' ')
+			oneCharofMorze.push_back(cintext[i]);
+		else
+		{
+			preparedChars.push_back(reversedMorze[oneCharofMorze]);
+			oneCharofMorze.clear();
+		}
+	}
+	return preparedChars;
 }
 
 int main()
 {
 	string text1;
 	text1 = "-.?";
-	string FixedText = decodeMorze(text1);
-	cout << FixedText;
+	/*string FixedText = decodeMorze(text1);
+	cout << FixedText;*/
+
+	vector<char>testV = decodeMorzeByChars(text1);
+	for (int i = 0; i < testV.size(); i++)
+	{
+		cout << testV[i] << " ";
+	}
 	return 0;
-} 
+}
 /*
 SCENARIO("Text -.? and check the char")
 {
