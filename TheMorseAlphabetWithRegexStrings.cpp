@@ -210,19 +210,51 @@ string HyphenInsteadQuestionMark(string text)
 	}
 }
 
-
-
-string decodeMorze(string morze)
+bool textHaveAskSymbols(string text)
 {
-	for (int i = 0; i < morze.size(); i++)
+	for (int i = 0; i < text.size(); i++)
 	{
-		if (morze[i] == '?')
-			return (decodeMorze(HyphenInsteadQuestionMark(morze)) + "   " + decodeMorze(PointInsteadQuestionMark(morze)) + "   " + decodeMorze(NothingInsteadQuestionMark(morze)) + "   ");
-
+		if (text[i] == '?')
+			return true;
 	}
-	return morze;
+	return false;
 }
 
+string decodeMorze(string text)
+{
+	string convertedToChars;
+
+	if (textHaveAskSymbols(text))
+	{
+		for (int i = 0; i < text.size(); i++)
+		{
+			if (text[i] == '?')
+				return (decodeMorze(HyphenInsteadQuestionMark(text)) + decodeMorze(PointInsteadQuestionMark(text)) + decodeMorze(NothingInsteadQuestionMark(text)));
+
+		}
+	}
+	else
+	{
+		convertedToChars.push_back(reversedMorze[text]);
+		return convertedToChars;
+	}
+}
+
+string clearOfDublicates(string text)//DOOOOOPISAAA		"ogmkdnmntwrausiaiemntaiete"
+{
+	for (int i = 0; i < text.size(); i++)
+	{
+		for (int j = i+1; j < text.size();j++)
+		{
+			if (text[i] == text[j])
+			{
+				text.erase(i, 1);
+				j = i;
+			}
+		}
+	}
+	return text;
+}
 vector<char> decodeMorzeByChars(string cintext)
 {
 	cintext = decodeMorze(cintext);
@@ -246,11 +278,15 @@ vector<char> decodeMorzeByChars(string cintext)
 int main()
 {
 	string text1;
-	text1 = "-.?";
+	text1 = "???";
+
 	/*string FixedText = decodeMorze(text1);
 	cout << FixedText;*/
 
-	vector<char>testV = decodeMorzeByChars(text1);
+	string testV = decodeMorze(text1);
+
+	testV = clearOfDublicates(testV);
+
 	for (int i = 0; i < testV.size(); i++)
 	{
 		cout << testV[i] << " ";
