@@ -242,17 +242,12 @@ string decodeMorze(string text)
 
 string clearOfDublicates(string text)//DOOOOOPISAAA		"ogmkdnmntwrausiaiemntaiete"
 {
-	for (int i = 0; i < text.size(); i++)
-	{
-		for (int j = i+1; j < text.size();j++)
-		{
-			if (text[i] == text[j])
-			{
-				text.erase(i, 1);
-				j = i;
-			}
-		}
-	}
+
+	std::sort(text.begin(), text.end());
+	std::string::iterator it;
+	it = std::unique(text.begin(), text.end());   
+
+	text.resize(std::distance(text.begin(), it));
 	return text;
 }
 vector<char> decodeMorzeByChars(string cintext)
